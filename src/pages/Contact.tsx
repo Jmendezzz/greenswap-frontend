@@ -31,7 +31,7 @@ function Contact() {
           </p>
         </header>
 
-        <div className="flex">
+        <div className="flex flex-col items-center gap-4 md:flex-row">
           <StyledImagesContainer>
             <img src={davidImage} alt="David" />
 
