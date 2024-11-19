@@ -5,7 +5,7 @@ import Heading from "../ui/Heading"
 import ProductDetailCard from "./ProductDetailCard"
 
 interface Props{
-    product: Partial<ProductDTO>
+   readonly product: Partial<ProductDTO>
 }
 
 function CreateProductPreview({product}: Props) {

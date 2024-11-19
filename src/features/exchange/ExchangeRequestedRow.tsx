@@ -6,7 +6,7 @@ import { Link } from 'react-router-dom';
 import { ROUTES } from '@/constants/routes';
 
 interface Props {
-  exchange: ExchangeDTO;
+  readonly exchange: ExchangeDTO;
 }
 function ExchangeRequestedRow({ exchange }: Props) {
   return (
@@ -25,9 +25,9 @@ function ExchangeRequestedRow({ exchange }: Props) {
         />
         <p>{exchange.productRequested.name}</p>
       </StyledExchangeRequestedRowImage>
-      <div className='text-center flex flex-col'>
-        {Status[exchange.status]}
-        {exchange.status === 'ACCEPTED' && <Link to={`${ROUTES.exchanges}/${exchange.id}`} className='text-contrast'>Ver detalles</Link>}
+      <div className='flex flex-col text-center'>
+        {Status[exchange.status as unknown as keyof typeof Status]}
+        {exchange.status === Status.ACCEPTED && <Link to={`${ROUTES.exchanges}/${exchange.id}`} className='text-contrast'>Ver detalles</Link>}
         </div>
     </Table.Row>
   );

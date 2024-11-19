@@ -10,7 +10,7 @@ import { SendMessageDTO } from '@/domain/chat/SendMessageDTO';
 import { IoMdSend } from 'react-icons/io';
 
 interface Props {
-  chat: ChatDTO;
+  readonly chat: ChatDTO;
 }
 
 function Chat({ chat }: Props) {
@@ -20,7 +20,7 @@ function Chat({ chat }: Props) {
 
   useEffect(() => {
     if (!currentUser) return;
-    connect(currentUser.id, (message) => {
+    connect((message) => {
         setMessages((prevMessages) => [...prevMessages, message]);
     });
 
@@ -29,29 +29,28 @@ function Chat({ chat }: Props) {
     };
   }, [currentUser]);
 
-const handleSendMessage = () => {
-    if (messageInput.trim() === '' || !chat) return;
-    if (!currentUser) return;
+  const handleSendMessage = () => {
+    if (messageInput.trim() === '' || !chat || !currentUser) return;
     const messageDTO: SendMessageDTO = {
-        content: messageInput,
-        senderId: currentUser.id,
+      content: messageInput,
+      senderId: currentUser.id,
     };
     sendMessage(chat.id.toString(), messageDTO);
     setMessageInput('');
-};
-const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+  };
+
+  const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setMessageInput(event.target.value);
-};
+  };
 
-const messagesRef = useRef<HTMLDivElement | null>(null);
-useEffect(()=>{
-    if(messagesRef.current){
-        messagesRef.current.scrollTop = messagesRef.current.scrollHeight;
+  const messagesRef = useRef<HTMLDivElement | null>(null);
+  useEffect(() => {
+    if (messagesRef.current) {
+      messagesRef.current.scrollTop = messagesRef.current.scrollHeight;
     }
+  }, [messages]);
 
-}, [messages])
-
-if (!currentUser) return null;
+  if (!currentUser) return null;
   return (
     <StyledChat>
       {messages && messages.length > 0 ? (
@@ -79,8 +78,10 @@ if (!currentUser) return null;
             if (e.key === 'Enter') handleSendMessage();
           }}
         />
-        <IoMdSend onClick={handleSendMessage} className='text-contrast text-5xl cursor-pointer'>
-        </IoMdSend>
+        <IoMdSend
+          onClick={handleSendMessage}
+          className="text-5xl cursor-pointer text-contrast"
+        ></IoMdSend>
       </div>
     </StyledChat>
   );

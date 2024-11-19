@@ -48,11 +48,9 @@ function StepGuideSection() {
                     </Heading>
                     <p>{step.description}</p>
                   </StyledStepInfo>
-                  {step.icon}
                 </StyledStep>
               ) : (
                 <StyledStep key={index}>
-                    {step.icon}
                   <StyledStepInfo>
                     <span>{index + 1}</span>
                     <Heading type="h2" className="text-contrast">

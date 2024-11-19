@@ -5,7 +5,7 @@ export enum Category {
 }
 
 export function getCategoryValue(key: Category): string {
-  return Category[key];
+  return Category[key as unknown as keyof typeof Category];
 }
 
 export function getCategoryKeys(): Category[] {

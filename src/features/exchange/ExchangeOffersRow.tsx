@@ -7,11 +7,12 @@ import useAcceptExchange from './useAcceptExchange';
 import Spinner from '../ui/Spinner';
 import { ROUTES } from '@/constants/routes';
 import useRejectExchange from './useRejectExchange';
+import { Status } from '@/domain/exchange/Status';
 
 interface Props {
   exchange: ExchangeDTO;
 }
-function ExchangeOffersRow({ exchange }: Props) {
+function ExchangeOffersRow({ exchange }: Readonly<Props>) {
   const { acceptExchange, isLoading: isLoasingAccept } = useAcceptExchange();
   const { rejectExchange, isLoading: isLoadingReject } = useRejectExchange();
 
@@ -46,39 +47,36 @@ function ExchangeOffersRow({ exchange }: Props) {
         </StyledExchangeOffersContainer>
       </Link>
 
-      <div className="flex gap-10 justify-center text-center">
-          <>
-            {
-              exchange.status === 'ACCEPTED' && (
-                <div className='flex flex-col'>
-                  <p className='text-contrast'>Intercambio aceptado</p>
-                  <Link to={`${ROUTES.exchanges}/${exchange.id}`}>
-                    Ver detalles
-                  </Link>
-                </div>
-              )
-            }
-            {exchange.status === 'DECLINED' &&
-              <div className='flex flex-col text-center'>
-                <p className='text-red-400'>Intercambio rechazado</p>
-              </div>}
-
-            {
-              exchange.status === 'AWAITING_RESPONSE' && (
+      <div className="flex justify-center gap-10 text-center">
+          {exchange.status === Status.ACCEPTED && (
+            <div className='flex flex-col'>
+              <p className='text-contrast'>Intercambio aceptado</p>
+              <Link to={`${ROUTES.exchanges}/${exchange.id}`}>
+                Ver detalles
+              </Link>
+            </div>
+          )}
+          {exchange.status === Status.DECLINED && (
+            <div className='flex flex-col text-center'>
+              <p className='text-red-400'>Intercambio rechazado</p>
+            </div>
+          )}
+          {exchange.status === Status.AWAITING_RESPONSE && (
+            <>
+              {isLoasingAccept || isLoadingReject ? <Spinner /> : (
                 <>
-                  {isLoasingAccept || isLoadingReject ? <Spinner /> :
-                    <>
-                      <HiCheckCircle
-                        className="text-6xl text-contrast cursor-pointer"
-                        onClick={() => handleAcceptExchange()}
-                      />
-                      <HiXCircle className="text-6xl text-red-500 cursor-pointer" onClick={() => handleRejectExchange()} />
-                    </>}
-
+                  <HiCheckCircle
+                    className="text-6xl cursor-pointer text-contrast"
+                    onClick={() => handleAcceptExchange()}
+                  />
+                  <HiXCircle
+                    className="text-6xl text-red-500 cursor-pointer"
+                    onClick={() => handleRejectExchange()}
+                  />
                 </>
-              )
-            }
-          </>
+              )}
+            </>
+          )}
       
       </div>
     </Table.Row>

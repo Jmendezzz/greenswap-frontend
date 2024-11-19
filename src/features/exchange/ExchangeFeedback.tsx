@@ -16,7 +16,7 @@ function ExchangeFeedback() {
       <StyledExchangeFeedback>
         <Heading type='h2'>Califica tu intercambio</Heading>
         <div className='flex gap-6'>
-          {[...Array(5)].map((star, i) => {
+          {[...Array(5)].map((_, i) => {
             const ratingValue = i + 1;
             return (
               <Star 

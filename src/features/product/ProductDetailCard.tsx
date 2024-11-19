@@ -13,7 +13,7 @@ import { ROUTES } from '@/constants/routes';
 import { useUserContext } from '@/context/UserContext';
 
 interface Props {
-  product: ProductDTO;
+  product: Partial<ProductDTO>;
 }
 
 function ProductDetailCard({ product }: Props) {
@@ -29,13 +29,13 @@ function ProductDetailCard({ product }: Props) {
       </StyledImageContainer>
 
       <StyledProductDetailContent>
-        <Heading align="left">{product.name || 'Titulo'}</Heading>
+        <Heading align="left">{product.name ??  'Titulo'}</Heading>
         <p>
           <span className="font-bold">Estado:</span>{' '}
-          {getQualityValue(product.quality) || 'No especificado'}
+          {product.quality ? getQualityValue(product.quality) : 'No especificado'}
         </p>
-        <p>{product.description || 'Descripición.'}</p>
-        <p>{formatToCOP(product.price) || 'No especificado.'}</p>
+        <p>{product.description ?? 'Descripición.'}</p>
+        <p>{product.price !== undefined ? formatToCOP(product.price) : 'No especificado.'}</p>
         <hr />
         <div>
           <header>
@@ -44,24 +44,28 @@ function ProductDetailCard({ product }: Props) {
             </Heading>
           </header>
           <div className="flex items-center gap-4">
-            <UserProfilePicture user={product.owner} />
-            <p>
-              <Link to={`/${ROUTES.userProfile}/${product.owner.id}`}>
-                {product.owner.firstName} {product.owner.lastName}
-              </Link>
-            </p>
+            {product.owner && (
+              <>
+                <UserProfilePicture user={product.owner} />
+                <p>
+                  <Link to={`/${ROUTES.userProfile}/${product.owner.id}`}>
+                    {product.owner.firstName} {product.owner.lastName}
+                  </Link>
+                </p>
+              </>
+            )}
           </div>
           <p>
-            {formatDate(new Date(product.createdAt.toString()), 'MM/dd/yyyy')}
+            {product.createdAt ? formatDate(new Date(product.createdAt.toString()), 'MM/dd/yyyy') : 'Fecha no especificada'}
           </p>
         </div>
 
         <footer className="flex justify-end gap-10">
-          <Button variant="secondary" disabled={product.owner.id === user?.id}>
+          <Button variant="secondary" disabled={product.owner?.id === user?.id}>
             Comprar
           </Button>
           <Link to={`${ROUTES.createExchange}/${product.id}`}>
-            <Button variant="primary" disabled={product.owner.id === user?.id}>
+            <Button variant="primary" disabled={product.owner?.id === user?.id}>
               Intercambiar
             </Button>
           </Link>
