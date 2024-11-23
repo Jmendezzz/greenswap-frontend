@@ -7,7 +7,7 @@ let socket: WebSocket;
 let stompClient: Client;
 
 export const connect = (onMessageReceived: (message: MessageDTO) => void) => {
-  socket = new SockJS('http://localhost:8080/ws/exchange-chat');
+  socket = new SockJS(`${import.meta.env.VITE_BACKEND_URL}/ws/exchange-chat`);
   stompClient = new Client({
     webSocketFactory: () => socket,
     reconnectDelay: 5000,

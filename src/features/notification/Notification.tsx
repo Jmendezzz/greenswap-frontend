@@ -28,7 +28,7 @@ function Notification() {
   }, [userNotifications]);
 
   useEffect(() => {
-    const socket = new SockJS('http://localhost:8080/ws/notification');
+    const socket = new SockJS(`${import.meta.env.VITE_BACKEND_URL}/ws/notification`);
     const stompClient = new Client({
       webSocketFactory: () => socket,
       reconnectDelay: 5000,
