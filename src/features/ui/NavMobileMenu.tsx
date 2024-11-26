@@ -51,7 +51,9 @@ const StyledUl = styled.ul`
   display: flex;
   flex-direction: column;
   height: 100%;
-  justify-content: space-around;
+  padding-top: 4rem;
+  justify-content: start;
+  gap: 2rem;
   align-items: center;
   text-align: center;
   font-size: 4rem;
