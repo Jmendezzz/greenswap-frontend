@@ -16,10 +16,13 @@ function ExchangeDetailCardInfo({ exchange }: Props) {
     <Row type="vertical">
       <ExchangeContainer>
         <ProductCard>
-          <div className="flex items-center gap-10">
-            <UserProfilePicture user={exchange.productRequested.owner} />
-            <p>{exchange.productRequested.owner.firstName}</p>
+          <div className="flex w-full">
+            <div className="flex items-center gap-10 ">
+              <UserProfilePicture user={exchange.productRequested.owner} />
+              <p>{exchange.productRequested.owner.firstName}</p>
+            </div>
           </div>
+
           <ProductImage
             src={exchange.productRequested.urlImage}
             alt={exchange.productRequested.name}
@@ -28,10 +31,13 @@ function ExchangeDetailCardInfo({ exchange }: Props) {
         </ProductCard>
         <MdSwapHoriz className="text-contrast text-[200px]" />
         <ProductCard>
-          <div className="flex items-center gap-10">
-            <UserProfilePicture user={exchange.productOffered.owner} />
-            <p>{exchange.productOffered.owner.firstName}</p>
+          <div className="flex w-full">
+            <div className="flex items-center gap-10 ">
+              <UserProfilePicture user={exchange.productOffered.owner} />
+              <p>{exchange.productOffered.owner.firstName}</p>
+            </div>
           </div>
+
           <ProductImage
             src={exchange.productOffered.urlImage}
             alt={exchange.productOffered.name}
@@ -41,12 +47,12 @@ function ExchangeDetailCardInfo({ exchange }: Props) {
       </ExchangeContainer>
       <StyledAditionalInfo>
         <p>Fecha de creación: {formatDate(exchange.createdAt, 'MM/dd/yyyy')}</p>
-        <div className="flex w-full justify-end">
+        <div className="flex justify-end w-full">
           <Modal>
-            <Modal.Open opens='feedback'>
+            <Modal.Open opens="feedback">
               <Button variant="primary">Califica tu intercambio</Button>
             </Modal.Open>
-            <Modal.Window name='feedback'>
+            <Modal.Window name="feedback">
               <ExchangeFeedback />
             </Modal.Window>
           </Modal>
@@ -67,6 +73,7 @@ const ExchangeContainer = styled.div`
 
 const ProductCard = styled.div`
   display: flex;
+  position: relative;
   flex-direction: column;
   background-color: var(--primary-color-light);
   align-items: center;
@@ -77,7 +84,7 @@ const ProductCard = styled.div`
 
 const ProductImage = styled.img`
   width: 200px;
-  height: 150px;
+  height: 200px;
   object-fit: contain;
 `;
 

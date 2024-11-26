@@ -15,7 +15,7 @@ const StyledGoBackButton = styled(HiArrowNarrowLeft)`
   color: var(--white);
   transition: transform 0.3s;
   position: absolute;
-  top: -4rem;
+  top: 2rem;
   left: 1rem;
 
   &:hover {

@@ -76,7 +76,8 @@ function ProductDetailCard({ product }: Props) {
 }
 const StyledImageContainer = styled.div`
   display: flex;
-  align-items: flex-start; // Add this line
+  justify-content:center;
+  align-items: center; // Add this line
 
   width: 100%;
   height: 100%;
@@ -84,8 +85,10 @@ const StyledImageContainer = styled.div`
     width: 50%;
   }
   img {
-    min-width: 300px;
-    height: 400px; // Change this line
+    max-width: 500px;
+    max-height: 500px;
+    width: 100%;
+    height: 100%; // Change this line
     object-fit: cover;
     border-radius: 3rem;
   }
@@ -93,11 +96,10 @@ const StyledImageContainer = styled.div`
 const StyledProductDetail = styled.div`
   display: flex;
   flex-direction: column;
-  justify-content: center;
   align-items: center;
   height: 100%;
   max-height: 800px;
-  padding: 2rem;
+  padding: 4rem;
   width: 100%;
   @media (min-width: ${Devices.laptop}) {
     flex-direction: row;

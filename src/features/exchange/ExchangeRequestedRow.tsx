@@ -9,6 +9,15 @@ interface Props {
   readonly exchange: ExchangeDTO;
 }
 function ExchangeRequestedRow({ exchange }: Props) {
+
+  const getStatusMessage = (status:Status) => {
+    switch (status) {
+      case Status.AWAITING_RESPONSE:
+        return 'Esperando respuesta del otro usuario';
+      case Status.DECLINED:
+        return 'Rechazado';
+    }
+  }
   return (
     <Table.Row>
       <StyledExchangeRequestedRowImage>
@@ -26,7 +35,7 @@ function ExchangeRequestedRow({ exchange }: Props) {
         <p>{exchange.productRequested.name}</p>
       </StyledExchangeRequestedRowImage>
       <div className='flex flex-col text-center'>
-        {Status[exchange.status as unknown as keyof typeof Status]}
+        {getStatusMessage(exchange.status)}
         {exchange.status === Status.ACCEPTED && <Link to={`${ROUTES.exchanges}/${exchange.id}`} className='text-contrast'>Ver detalles</Link>}
         </div>
     </Table.Row>

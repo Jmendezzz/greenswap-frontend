@@ -13,7 +13,7 @@ interface Props {
   exchange: ExchangeDTO;
 }
 function ExchangeOffersRow({ exchange }: Readonly<Props>) {
-  const { acceptExchange, isLoading: isLoasingAccept } = useAcceptExchange();
+  const { acceptExchange, isLoading: isLoadingAccept } = useAcceptExchange();
   const { rejectExchange, isLoading: isLoadingReject } = useRejectExchange();
 
   const handleAcceptExchange = () => {
@@ -61,9 +61,9 @@ function ExchangeOffersRow({ exchange }: Readonly<Props>) {
               <p className='text-red-400'>Intercambio rechazado</p>
             </div>
           )}
-          {exchange.status === Status.AWAITING_RESPONSE && (
+          {exchange.status === Status.AWAITING_RESPONSE.toString() && (
             <>
-              {isLoasingAccept || isLoadingReject ? <Spinner /> : (
+              {isLoadingAccept || isLoadingReject ? <Spinner /> : (
                 <>
                   <HiCheckCircle
                     className="text-6xl cursor-pointer text-contrast"

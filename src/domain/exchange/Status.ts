@@ -1,5 +1,5 @@
 export enum Status{
-    AWAITING_RESPONSE = 'Esperando respuesta del usuario',
-    ACCEPTED = 'Aceptado',
-    DECLINED = 'Rechazado'
+    AWAITING_RESPONSE = 'AWAITING_RESPONSE',
+    ACCEPTED = 'ACCEPTED',
+    DECLINED = 'DECLINED'
 }

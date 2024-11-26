@@ -31,7 +31,7 @@ function Contact() {
           </p>
         </header>
 
-        <div className="flex flex-col items-center gap-4 md:flex-row">
+        <div className="flex flex-col items-center gap-4">
           <StyledImagesContainer>
             <img src={davidImage} alt="David" />
 
@@ -41,7 +41,7 @@ function Contact() {
               <FormRow error={errors?.name?.message}>
                 <Input
                   {...register('name', { required: 'El nombre es requerido' })}
-                  placeholder="GreenSwap team"
+                  placeholder='Name'
                   type="text"
                   variant="non-outlined"
                 />
@@ -85,7 +85,7 @@ const StyledContact = styled(Section)`
 const StyledFormContainer = styled.div`
   background-color: var(--primary-color-light);
   border-radius:3rem;
-  width: 50%;
+  width: 100%;
   padding: 4rem;
   & > form{
     display: flex;
@@ -105,6 +105,12 @@ const StyledImagesContainer = styled.div`
         width: 100%;
         height:100%;
         object-fit: contain;
+        transition: transform 0.3s;
+    }
+
+    & > img:hover{
+        transform: scale(1.05);
+      
     }
     `;
 
