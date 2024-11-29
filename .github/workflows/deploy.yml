@@ -16,7 +16,7 @@ jobs:
         uses: appleboy/ssh-action@v0.1.0
         with:
           host: ${{ secrets.EC2_HOST }} 
-\          key: ${{ secrets.EC2_PRIVATE_KEY}}  
+          key: ${{ secrets.EC2_PRIVATE_KEY}}  
           script: |
             # Navegar al directorio de trabajo en la máquina EC2
             cd /home/ec2-user
