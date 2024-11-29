@@ -8,31 +8,24 @@ on:
 jobs:
   deploy:
     runs-on: ubuntu-latest
+
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v3
+    - name: Checkout code
+      uses: actions/checkout@v3
 
-      - name: Copy code to EC2
-        uses: appleboy/ssh-action@v0.1.0
-        with:
-          host: ${{ secrets.EC2_HOST}} 
-          key: ${{ secrets.EC2_PRIVATE_KEY}}  
-          script: |
-            # Navegar al directorio de trabajo en la máquina EC2
-            cd /home/ec2-user
-            git pull origin master  # Asumiendo que has clonado previamente el repositorio aquí
+    - name: Set up SSH agent
+      uses: webfactory/ssh-agent@v0.5.4
+      with:
+        ssh-private-key: ${{ secrets.EC2_SSH_KEY }}
 
-            cd greenswap-frontend
-
-            sudo rm -r dist
-
-            sudo npm install
-
-            sudo npm run build
-
-            sudo cp -r dist /usr/share/nginx/html/
-
-            sudo systemctl restart nginx
-
-      - name: Check nginx status
-        run: ssh -i ${{ secrets.EC2_SSH_KEY }} -o StrictHostKeyChecking=no ${{ secrets.EC2_USER }}@${{ secrets.EC2_HOST }} 'sudo systemctl status nginx'
+    - name: SSH into EC2 and deploy
+      run: |
+        ssh -o StrictHostKeyChecking=no -i ${{ secrets.EC2_PRIVATE_KEY }} ec2-user@${{ secrets.EC2_HOST }} << 'EOF'
+          cd /home/ec2-user/greenswap-frontend
+          git pull origin master
+          sudo rm -r dist
+          sudo npm install
+          sudo npm run build
+          sudo cp -r dist /usr/share/nginx/html/
+          sudo systemctl restart nginx
+        EOF
