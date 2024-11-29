@@ -15,29 +15,23 @@ jobs:
       - name: Copy code to EC2
         uses: appleboy/ssh-action@v0.1.0
         with:
-          host: ${{ secrets.EC2_HOST }} 
+          host: ${{ secrets.EC2_HOST}} 
           key: ${{ secrets.EC2_PRIVATE_KEY}}  
           script: |
             # Navegar al directorio de trabajo en la máquina EC2
             cd /home/ec2-user
-            git pull origin main  # Asumiendo que has clonado previamente el repositorio aquí
+            git pull origin master  # Asumiendo que has clonado previamente el repositorio aquí
 
-            # Navegar al directorio del frontend
             cd greenswap-frontend
 
-            # Eliminar la carpeta dist actual
             sudo rm -r dist
 
-            # Instalar dependencias
             sudo npm install
 
-            # Construir el proyecto
             sudo npm run build
 
-            # Copiar los archivos de la carpeta dist a la carpeta de NGINX
             sudo cp -r dist /usr/share/nginx/html/
 
-            # Reiniciar el servidor NGINX
             sudo systemctl restart nginx
 
       - name: Check nginx status
