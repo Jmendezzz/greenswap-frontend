@@ -3,7 +3,7 @@ name: Deploy to EC2
 on:
   push:
     branches:
-      - master
+      - master  
 
 jobs:
   deploy:
@@ -12,28 +12,32 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v3
 
-      - name: Set up Node.js
-        uses: actions/setup-node@v3
-        with:
-          node-version: '18'
-
-      - name: Install dependencies
-        run: npm install
-        working-directory: ./greenswap-frontend
-
-      - name: Build project
-        run: sudo npm run build
-        working-directory: ./greenswap-frontend
-
-      - name: Copy build files to EC2
+      - name: Copy code to EC2
         uses: appleboy/ssh-action@v0.1.0
         with:
-          host: ${{ secrets.EC2_HOST }}  
-          key: ${{ secrets.EC2_PRIVATE_KEY }}  
+          host: ${{ secrets.EC2_HOST }} 
+\          key: ${{ secrets.EC2_PRIVATE_KEY}}  
           script: |
-            cd /home/ec2-user/greenswap-frontend
-            sudo rm -r /usr/share/nginx/html/dist
+            # Navegar al directorio de trabajo en la máquina EC2
+            cd /home/ec2-user
+            git pull origin main  # Asumiendo que has clonado previamente el repositorio aquí
+
+            # Navegar al directorio del frontend
+            cd greenswap-frontend
+
+            # Eliminar la carpeta dist actual
+            sudo rm -r dist
+
+            # Instalar dependencias
+            sudo npm install
+
+            # Construir el proyecto
+            sudo npm run build
+
+            # Copiar los archivos de la carpeta dist a la carpeta de NGINX
             sudo cp -r dist /usr/share/nginx/html/
+
+            # Reiniciar el servidor NGINX
             sudo systemctl restart nginx
 
       - name: Check nginx status
