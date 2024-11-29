@@ -37,7 +37,7 @@ jobs:
         run: ssh ec2-user@${{ secrets.EC2_HOST }} "echo 'SSH connection successful'"
 
       - name: Deploy to EC2, Copy dist files to Nginx folder
-        run: scp -r dist/* ec2-user@${{ secrets.EC2_HOST }}:/usr/share/nginx/html/
+        run: scp -r dist/* ec2-user@${{ secrets.EC2_HOST }}:/usr/share/nginx/html/dist/
 
       - name: Restart Nginx
         run: ssh ec2-user@${{ secrets.EC2_HOST }} "sudo systemctl restart nginx"
