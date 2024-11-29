@@ -11,12 +11,12 @@ jobs:
 
     steps:
     - name: Checkout code
-      uses: actions/checkout@v3
+      uses: actions/checkout@v2
 
     - name: Set up Node.js
-      uses: actions/setup-node@v3
+      uses: actions/setup-node@v2
       with:
-        node-version: '18'
+        node-version: '14'
 
     - name: Install Dependencies
       run: npm install
@@ -36,13 +36,14 @@ jobs:
     - name: Test SSH Connection
       run: ssh -i ~/.ssh/id_rsa ec2-user@${{ secrets.EC2_HOST }} "echo 'SSH connection successful'"
 
-    - name: Deploy to EC2, Copy dist files to Nginx folder
-      run: scp -i ~/.ssh/id_rsa -r dist/* ec2-user@${{ secrets.EC2_HOST }}:/home/ec2-user/greenswap-frontend/dist/
+    - name: Deploy to EC2, Copy dist files to a temporary directory
+      run: scp -i ~/.ssh/id_rsa -r dist/* ec2-user@${{ secrets.EC2_HOST }}:/home/ec2-user/temp-dist/
 
     - name: Move files to Nginx folder and Restart Nginx
       run: |
         ssh -i ~/.ssh/id_rsa ec2-user@${{ secrets.EC2_HOST }} << 'EOF'
           sudo rm -r /usr/share/nginx/html/*
-          sudo cp -r /home/ec2-user/greenswap-frontend/dist/* /usr/share/nginx/html/
+          sudo cp -r /home/ec2-user/temp-dist/* /usr/share/nginx/html/
+          sudo rm -r /home/ec2-user/temp-dist
           sudo systemctl restart nginx
         EOF
