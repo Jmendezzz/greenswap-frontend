@@ -57,7 +57,7 @@ function HeroSection() {
           >
             <StyledArrowDown  />
         </motion.div>
-        <p className='text-primary font-bold'>Conoce más del mundo del reciclaje y GreenSwap</p>
+        <p className='text-primary font-bold'>Conoce más del mundo del reciclaje y GreenSwap!</p>
         </StyledArrowContainer>
       </StyledHeroContent>
     </StyledHeroSection>
