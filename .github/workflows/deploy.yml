@@ -8,42 +8,33 @@ on:
 jobs:
   deploy:
     runs-on: ubuntu-latest
-
     steps:
-    - name: Checkout code
-      uses: actions/checkout@v2
+      - name: Checkout code
+        uses: actions/checkout@v3
 
-    - name: Set up Node.js
-      uses: actions/setup-node@v2
-      with:
-        node-version: '14'
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '18'
 
-    - name: Install Dependencies
-      run: npm install
+      - name: Install dependencies
+        run: npm install
+        working-directory: ./greenswap-frontend
 
-    - name: Build Frontend
-      run: npm run build
+      - name: Build project
+        run: sudo npm run build
+        working-directory: ./greenswap-frontend
 
-    - name: Configure SSH
-      env:
-        PRIVATE_KEY: ${{ secrets.EC2_PRIVATE_KEY }}
-      run: |
-        mkdir -p ~/.ssh
-        echo "$PRIVATE_KEY" > ~/.ssh/id_rsa
-        chmod 600 ~/.ssh/id_rsa
-        ssh-keyscan -H ${{ secrets.EC2_HOST }} >> ~/.ssh/known_hosts
+      - name: Copy build files to EC2
+        uses: appleboy/ssh-action@v0.1.0
+        with:
+          host: ${{ secrets.EC2_HOST }}  
+          key: ${{ secrets.EC2_PRIVATE_KEY }}  
+          script: |
+            cd /home/ec2-user/greenswap-frontend
+            sudo rm -r /usr/share/nginx/html/dist
+            sudo cp -r dist /usr/share/nginx/html/
+            sudo systemctl restart nginx
 
-    - name: Test SSH Connection
-      run: ssh -i ~/.ssh/id_rsa ec2-user@${{ secrets.EC2_HOST }} "echo 'SSH connection successful'"
-
-    - name: Deploy to EC2, Copy dist files to a temporary directory
-      run: scp -i ~/.ssh/id_rsa -r dist/* ec2-user@${{ secrets.EC2_HOST }}:/home/ec2-user/temp-dist/
-
-    - name: Move files to Nginx folder and Restart Nginx
-      run: |
-        ssh -i ~/.ssh/id_rsa ec2-user@${{ secrets.EC2_HOST }} << 'EOF'
-          sudo rm -r /usr/share/nginx/html/*
-          sudo cp -r /home/ec2-user/temp-dist/* /usr/share/nginx/html/
-          sudo rm -r /home/ec2-user/temp-dist
-          sudo systemctl restart nginx
-        EOF
+      - name: Check nginx status
+        run: ssh -i ${{ secrets.EC2_SSH_KEY }} -o StrictHostKeyChecking=no ${{ secrets.EC2_USER }}@${{ secrets.EC2_HOST }} 'sudo systemctl status nginx'
