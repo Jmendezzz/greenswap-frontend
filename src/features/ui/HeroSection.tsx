@@ -20,7 +20,7 @@ function HeroSection() {
     <StyledHeroSection>
       <StyledHeroContent>
         <header className="flex w-[90%]  flex-col">
-          <div className="space-y-10 flex flex-col justify-center">
+          <div className="flex flex-col justify-center space-y-10">
             <Heading type="h1" align="left">
               Intercambia productos para un{' '}
               <span className="text-contrast">Futuro Sostenible</span>
@@ -57,7 +57,7 @@ function HeroSection() {
           >
             <StyledArrowDown  />
         </motion.div>
-        <p className='text-primary font-bold'>Conoce más del mundo del reciclaje y GreenSwap!</p>
+        <p className='font-bold text-primary'>Conoce más del mundo del reciclaje y GreenSwap!</p>
         </StyledArrowContainer>
       </StyledHeroContent>
     </StyledHeroSection>

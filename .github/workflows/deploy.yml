@@ -1,4 +1,4 @@
-name: Deploy Frontend
+name: Deploy to EC2
 
 on:
   push:
@@ -6,38 +6,43 @@ on:
       - master
 
 jobs:
-  build-and-deploy:
+  deploy:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout Code
-        uses: actions/checkout@v3
+    - name: Checkout code
+      uses: actions/checkout@v2
 
-      - name: Set up Node.js
-        uses: actions/setup-node@v3
-        with:
-          node-version: 18
+    - name: Set up Node.js
+      uses: actions/setup-node@v2
+      with:
+        node-version: '14'
 
-      - name: Install Dependencies
-        run: npm install
+    - name: Install Dependencies
+      run: npm install
 
-      - name: Build Frontend
-        run: npm run build
+    - name: Build Frontend
+      run: npm run build
 
-      - name: Configure SSH
-        env:
-          PRIVATE_KEY: ${{ secrets.EC2_PRIVATE_KEY }}
-        run: |
-          mkdir -p ~/.ssh
-          echo "$PRIVATE_KEY" > ~/.ssh/id_rsa
-          chmod 600 ~/.ssh/id_rsa
-          ssh-keyscan -H ${{ secrets.EC2_HOST }} >> ~/.ssh/known_hosts
+    - name: Configure SSH
+      env:
+        PRIVATE_KEY: ${{ secrets.EC2_PRIVATE_KEY }}
+      run: |
+        mkdir -p ~/.ssh
+        echo "$PRIVATE_KEY" > ~/.ssh/id_rsa
+        chmod 600 ~/.ssh/id_rsa
+        ssh-keyscan -H ${{ secrets.EC2_HOST }} >> ~/.ssh/known_hosts
 
-      - name: Test SSH Connection
-        run: ssh ec2-user@${{ secrets.EC2_HOST }} "echo 'SSH connection successful'"
+    - name: Test SSH Connection
+      run: ssh -i ~/.ssh/id_rsa ec2-user@${{ secrets.EC2_HOST }} "echo 'SSH connection successful'"
 
-      - name: Deploy to EC2, Copy dist files to Nginx folder
-        run: scp -r dist/* ec2-user@${{ secrets.EC2_HOST }}:/usr/share/nginx/html/dist/
+    - name: Deploy to EC2, Copy dist files to Nginx folder
+      run: scp -i ~/.ssh/id_rsa -r dist/* ec2-user@${{ secrets.EC2_HOST }}:/home/ec2-user/greenswap-frontend/dist/
 
-      - name: Restart Nginx
-        run: ssh ec2-user@${{ secrets.EC2_HOST }} "sudo systemctl restart nginx"
+    - name: Move files to Nginx folder and Restart Nginx
+      run: |
+        ssh -i ~/.ssh/id_rsa ec2-user@${{ secrets.EC2_HOST }} << 'EOF'
+          sudo rm -r /usr/share/nginx/html/*
+          sudo cp -r /home/ec2-user/greenswap-frontend/dist/* /usr/share/nginx/html/
+          sudo systemctl restart nginx
+        EOF
