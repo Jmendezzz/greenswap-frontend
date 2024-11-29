@@ -3,26 +3,37 @@ name: Deploy to EC2
 on:
   push:
     branches:
-      - master  
+      - master  # O cualquier rama que desees
 
 jobs:
   deploy:
     runs-on: ubuntu-latest
 
     steps:
+    # Paso 1: Hacer checkout del código
     - name: Checkout code
       uses: actions/checkout@v3
 
-    - name: Set up SSH agent
-      uses: webfactory/ssh-agent@v0.5.4
-      with:
-        ssh-private-key: ${{ secrets.EC2_PRIVATE_KEY }}
+    # Paso 2: Configurar la clave SSH
+    - name: Configure SSH
+      env:
+        PRIVATE_KEY: ${{ secrets.EC2_PRIVATE_KEY }}
+      run: |
+        mkdir -p ~/.ssh
+        echo "$PRIVATE_KEY" > ~/.ssh/id_rsa
+        chmod 600 ~/.ssh/id_rsa
+        ssh-keyscan -H ${{ secrets.EC2_HOST }} >> ~/.ssh/known_hosts
 
+    # Paso 3: Probar la conexión SSH
+    - name: Test SSH Connection
+      run: ssh ec2-user@${{ secrets.EC2_HOST }} "echo 'SSH connection successful'"
+
+    # Paso 4: Desplegar la aplicación en EC2
     - name: SSH into EC2 and deploy
       run: |
-        ssh -o StrictHostKeyChecking=no -i ${{ secrets.EC2_PRIVATE_KEY }} ec2-user@${{ secrets.EC2_HOST }} << 'EOF'
+        ssh ec2-user@${{ secrets.EC2_HOST }} << 'EOF'
           cd /home/ec2-user/greenswap-frontend
-          git pull origin master
+          git pull origin main
           sudo rm -r dist
           sudo npm install
           sudo npm run build
