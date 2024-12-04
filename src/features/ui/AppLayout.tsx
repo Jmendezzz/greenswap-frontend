@@ -3,6 +3,7 @@ import Nav from './Nav';
 import { Outlet } from 'react-router-dom';
 import FullScreenSpinner from './FullScreenSpinner';
 import { useUserContext } from '@/context/UserContext';
+import Footer from './Footer';
 
 function AppLayout() {
   const { isLoading} = useUserContext();
@@ -17,6 +18,7 @@ function AppLayout() {
       <Main>
         <Outlet />
       </Main>
+      <Footer />
     </StyledAppLayout>
   );
 }

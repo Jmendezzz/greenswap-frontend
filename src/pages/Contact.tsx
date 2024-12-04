@@ -41,7 +41,7 @@ function Contact() {
               <FormRow error={errors?.name?.message}>
                 <Input
                   {...register('name', { required: 'El nombre es requerido' })}
-                  placeholder='Name'
+                  placeholder='Nombre'
                   type="text"
                   variant="non-outlined"
                 />
