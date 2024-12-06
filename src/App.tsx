@@ -47,11 +47,12 @@ function App() {
                 path={`${ROUTES.products}/:productId`}
                 element={<ProductDetail />}
               />
-              <Route path={`${ROUTES.userProfile}/:userId`} element={<Profile />} />
               <Route path={ROUTES.contact} element={<Contact />} />
 
               {/* Protected Routes */}
               <Route element={<ProtectedRoute />}>
+              
+              <Route path={`${ROUTES.userProfile}/:userId`} element={<Profile />} />
 
                 <Route
                   path={ROUTES.createProducts}

@@ -20,7 +20,7 @@ const StyledList = styled.div`
   display: flex;
   flex-direction: column;
   overflow-y: auto;
-  gap: 20;
+  gap: 4rem;
   width: 100%;
   height: 100%;
 `;

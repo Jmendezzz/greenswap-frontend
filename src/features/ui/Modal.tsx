@@ -1,4 +1,5 @@
 import useClickOutside from '@/hooks/useClickOutside';
+import { Devices } from '@/styles/Devices';
 import { AnimatePresence, motion } from 'framer-motion';
 import {
   ReactElement,
@@ -17,8 +18,12 @@ const StyledModal = styled(motion.div)`
   background-color: var(--primary-color-light);
   border-radius: 2rem;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  
+  @media (min-width: ${Devices.laptop}) {
+    padding: 3rem 4rem;
+  }
 
-  padding: 3.2rem 4rem;
+  padding: 1rem 3rem;
   transition: all 0.5s;
   z-index: 1000;
 `;

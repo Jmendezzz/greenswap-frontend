@@ -29,7 +29,7 @@ const StyledContainer = styled(Row)`
   border-radius: 3rem;
   background-color: #212b38;
   background-color: rgba(33, 43, 56, 0.5);
-  width: 50%;
+  width:100%;
   max-width: 700px;
 `;
 

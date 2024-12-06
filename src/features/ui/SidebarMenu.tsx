@@ -8,7 +8,8 @@ const SidebarMenu = styled.div`
   gap: 4rem;
   background-color: var(--primary-color-light);
   border-radius: 3rem;
-  width: 500px;
+  min-width: 300px;
+  width:fit-content;
   padding: 2rem 3rem;
   height: 100%;
   position: sticky;
@@ -22,7 +23,9 @@ const SidebarMenu = styled.div`
   }
 
   @media (max-width: ${Devices.tablet}) {
-    display: none;
+    padding: 0.3rem 1rem;
+
+    max-width: 300px;
   }
 `;
 

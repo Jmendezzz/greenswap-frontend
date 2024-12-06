@@ -3,8 +3,8 @@ import { useUserContext } from '@/context/UserContext';
 import { motion } from 'framer-motion';
 import { NavLink } from 'react-router-dom';
 import styled from 'styled-components';
-import UserProfilePicture from './UserProfilePicture';
 import Button from './Button';
+import UserProfilePictureNavBar from './UserProfilePictureNavBar';
 
 interface NavMobileMenuProps {
   setIsOpen: (isOpen: boolean) => void;
@@ -15,19 +15,25 @@ function NavMobileMenu({ setIsOpen }: NavMobileMenuProps) {
   return (
     <StyledNavMobileMenu
       initial={{ x: '100%' }}
-      animate={{ x: 0, overflowX: 'hidden'}}
-      exit={{ x: '100%', display: 'none'}}
+      animate={{ x: 0, overflowX: 'hidden' }}
+      exit={{ x: '100%', display: 'none' }}
       transition={{ duration: 0.3, ease: 'easeInOut' }}
     >
-      <StyledUl >
+      <StyledUl>
         <li className="flex flex-col">
-          <StyledNavLink to={ROUTES.home} onClick={() => setIsOpen(false)}>Inicio</StyledNavLink>
-          <StyledNavLink to={ROUTES.products} onClick={() => setIsOpen(false)}>Productos</StyledNavLink>
-          <StyledNavLink to={ROUTES.contact} onClick={() => setIsOpen(false)}>Contacto</StyledNavLink>
+          <StyledNavLink to={ROUTES.home} onClick={() => setIsOpen(false)}>
+            Inicio
+          </StyledNavLink>
+          <StyledNavLink to={ROUTES.products} onClick={() => setIsOpen(false)}>
+            Productos
+          </StyledNavLink>
+          <StyledNavLink to={ROUTES.contact} onClick={() => setIsOpen(false)}>
+            Contacto
+          </StyledNavLink>
         </li>
 
         <li>
-          {user && <UserProfilePicture user={user} />}
+          {user && <UserProfilePictureNavBar user={user} />}
           {!user && (
             <NavLink to={ROUTES.login}>
               <Button variant="primary">Ingresar</Button>

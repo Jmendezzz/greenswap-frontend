@@ -7,6 +7,7 @@ import { formatDate } from 'date-fns';
 import Button from '../ui/Button';
 import Modal from '../ui/Modal';
 import ExchangeFeedback from './ExchangeFeedback';
+import { Devices } from '@/styles/Devices';
 
 interface Props {
   exchange: ExchangeDTO;
@@ -64,7 +65,11 @@ function ExchangeDetailCardInfo({ exchange }: Props) {
 
 const ExchangeContainer = styled.div`
   display: flex;
-  flex-direction: row;
+  flex-direction: column;
+  @media (min-width: ${Devices.laptop}) {
+    flex-direction: row;
+  }
+    
   align-items: center;
   justify-content: center;
   width: 100%;

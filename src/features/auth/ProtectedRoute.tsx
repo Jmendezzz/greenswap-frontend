@@ -5,11 +5,9 @@ import { useEffect } from 'react';
 
 function ProtectedRoute() {
   const { user } = useUserContext();
-  console.log('user', user);
   const navigate = useNavigate();
   useEffect(() => {
     if (!user) {
-      console.log('No user');
       navigate(ROUTES.login);
     }
   }, [user, navigate]);

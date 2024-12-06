@@ -44,6 +44,7 @@ const StyledTabs = styled.div`
       li {
         cursor: pointer;
         padding: 1rem 2rem;
+        font-size: 2rem;
         border-radius: 0.5rem;
         background-color: var(--primary-color-light);
         color: var(--white);

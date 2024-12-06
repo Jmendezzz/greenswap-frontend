@@ -11,21 +11,29 @@ import { ROUTES } from '@/constants/routes';
 interface ProductItemCardProps {
   product: ListProductDTO;
   size?: 'xsm' | 'sm' | 'lg' | 'xl';
-  onClick?: (product:ListProductDTO) => void;
+  onClick?: (product: ListProductDTO) => void;
 }
 
-function ProductItemCard({ product, size = 'sm', onClick }: ProductItemCardProps) {
+function ProductItemCard({
+  product,
+  size = 'sm',
+  onClick,
+}: ProductItemCardProps) {
   const navigate = useNavigate();
-  const clickHandler = () =>{
-    if(onClick){
+  const clickHandler = () => {
+    if (onClick) {
       onClick(product);
-    }else{
+    } else {
       navigate(`${ROUTES.products}/${product.id}`);
     }
-  }
+  };
 
   return (
-    <StyledProductItemCard size={size} className="shadow-lg relative" onClick={clickHandler}>
+    <StyledProductItemCard
+      size={size}
+      className="relative shadow-lg"
+      onClick={clickHandler}
+    >
       <StyledProductImage size={size}>
         {product.urlImage != '' && product.urlImage != null ? (
           <img
@@ -37,11 +45,11 @@ function ProductItemCard({ product, size = 'sm', onClick }: ProductItemCardProps
           <HiPhotograph className="w-full h-full" />
         )}
       </StyledProductImage>
-      <div className='text-center h-[100px]'>
-        <h2>{product.name}</h2>
-        <p>{formatToCOP(product.price)}</p>
-        <p>{getCategoryValue(product.category)}</p>
-        <ProductQualityTag quality={product.quality}/>
+      <div className="text-center h-[100px]">
+        <StyledName>{product.name}</StyledName>
+        <StyledPrice>{formatToCOP(product.price)}</StyledPrice>
+        <StyledCategory>{getCategoryValue(product.category)}</StyledCategory>
+        <ProductQualityTag quality={product.quality} />
       </div>
     </StyledProductItemCard>
   );
@@ -60,14 +68,7 @@ const StyledProductItemCard = styled.div<StyledProps>`
   cursor: pointer;
   gap: 1rem;
   height: fit-content;
-  padding-bottom: 0.5rem;
-  h2 {
-    font-size: 1.7rem;
-    font-weight: 700;
-  }
-  p {
-    margin: 0.5rem 0;
-  }
+  padding-bottom: 2rem;
   width: ${({ size }) => {
     switch (size) {
       case 'xsm':
@@ -103,7 +104,7 @@ const StyledProductItemCard = styled.div<StyledProps>`
 const StyledProductImage = styled.div<StyledProps>`
   width: 100%;
   border-radius: 1rem;
-  img{
+  img {
     border-radius: 1rem 1rem 0 0;
     object-fit: cover;
     width: 100%;
@@ -140,5 +141,19 @@ const StyledProductImage = styled.div<StyledProps>`
     }};
   }
 `;
+const StyledCategory = styled.p`
+  padding: 0.5rem 1rem;
+  background-color: var(--primary-color);
+  border-radius: 1rem;
+`;
 
+const StyledPrice = styled.p`
+  font-weight: 700;
+  color: var(--contrast-color);
+`
+
+const StyledName = styled.h2`
+  font-size: 2rem;
+  font-weight: 700;
+`;
 export default ProductItemCard;

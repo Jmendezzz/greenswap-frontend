@@ -100,6 +100,7 @@ const StyledImagesContainer = styled.div`
     flex-wrap: wrap;
     justify-content: center;
     width: 50%;
+    min-width: 300px;
     height: 100%;
     & > img{
         width: 100%;

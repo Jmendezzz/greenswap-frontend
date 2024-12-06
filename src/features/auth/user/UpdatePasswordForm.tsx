@@ -22,7 +22,7 @@ function UpdatePasswordForm() {
   }
   return (
     <form
-      className="h-full flex flex-col gap-10  w-[50%]"
+      className="h-full flex flex-col gap-10  w-full md:w-[50%]"
       onSubmit={handleSubmit(onSubmit)}
     >
       <div className="space-y-10">

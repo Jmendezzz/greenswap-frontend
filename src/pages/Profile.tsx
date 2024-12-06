@@ -25,7 +25,7 @@ function Profile() {
 
   if (isLoading && isLoadingUserProducts) {
     return (
-      <div className="flex items-center justify-center w-full h-full  bg-primary">
+      <div className="flex items-center justify-center w-full h-full bg-primary">
         <Spinner />
       </div>
     );
@@ -36,9 +36,9 @@ function Profile() {
 
   return (
     <StyledProfileSection>
-      <div className="flex gap-10">
+      <div className="flex flex-col items-center gap-12 md:flex-row md:items-start">
         <SidebarMenu>
-          <div className="w-full min-h-[600px] flex items-center">
+          <div className="w-full md:min-h-[600px] flex items-center">
             <UserProfilePicture user={user} size="xl" />
             <p>
               {user.firstName} {user.lastName}
@@ -48,7 +48,7 @@ function Profile() {
           </div>
         </SidebarMenu>
 
-        <StyledLightContainer className="flex flex-col items-center  w-full">
+        <StyledLightContainer className="flex flex-col items-center w-full">
           <Tabs
             tabs={[
               {
